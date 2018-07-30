@@ -1,0 +1,99 @@
+/* 
+    Created on : Dec 11, 2016, 9:00:59 AM
+    Author     : wbeebe
+*/
+
+/*
+For dark theme.
+*/
+/*
+.root {
+    -fx-base: rgb(50, 50, 50);
+    -fx-background: rgb(50, 50, 50);
+    -fx-control-inner-background:  rgb(50, 50, 50);
+}
+*/
+
+.text-field:modifiedtext {
+  -fx-text-box-border: red ;
+  -fx-focus-color: red ;
+}
+
+.text-field {
+    -fx-background-radius: 0;
+}
+
+/* Tab attributes */
+
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+ /* -fx-padding: 0.416667em 0.166667em 0.0em 0.833em; /* 5 2 0 10 */
+    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overridden as 5 2 0 0 */
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0 1 0 1,0,0;
+    -fx-background-radius: 0;
+}
+.tab-pane .tab
+{
+    -fx-background-color: #e6e6e6;
+}
+
+.tab-pane .tab:selected {
+    /* -fx-background-color: #3c3c3c; */
+    /* -fx-background-color: #cc5000; */
+    -fx-background-color: #028445;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:modifiedtab {
+    -fx-background-color: #a00000;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+    /* -fx-text-fill: #96b946; */
+    -fx-text-fill: #e6e6e6;
+    -fx-font-weight: bold;
+}
+
+.text-area {
+    -fx-background-color: #fff, #fff;
+    -fx-border-color: derive(-fx-color, -25%);
+    /* -fx-background-color: #fff; */
+    -fx-background-radius: 0;
+    -fx-effect: dropshadow(gaussian , rgba(0,0,0,0.2), 12, 0.0, 4, 4);
+}
+
+.text-area .content {
+    -fx-background-color: #fff;
+}
+
+.text-area:focused .content {
+    -fx-background-color: #fff;
+}
+
+.button {
+    -fx-background-radius: 0;
+    /* -fx-background-color: derive(-fx-color, -50%); */
+    -fx-background-color: #903232;
+    -fx-text-fill: white;
+}
+
+.dialog-pane > .button {
+    -fx-background-radius: 0;
+}
