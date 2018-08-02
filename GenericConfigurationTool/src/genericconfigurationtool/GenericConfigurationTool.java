@@ -98,12 +98,12 @@ public class GenericConfigurationTool extends Application implements AppControl 
     @Override
     public void closeApp() {
         if (isEdited) {
-            var yes = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
-            var no = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
+            var close = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+            var stay = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
             var alert = new Alert(
                     AlertType.CONFIRMATION,
                     "You have unsaved edits.\nReally close and exit?",
-                    yes, no);
+                    close, stay);
             var dialogPane = alert.getDialogPane();
             dialogPane.getStylesheets().add(
                 getClass().getResource("GenericConfigurationTool.css").toExternalForm());
