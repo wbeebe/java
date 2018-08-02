@@ -15,15 +15,14 @@ limitations under the License.
  */
 package genericconfigurationtool;
 
-import java.util.Optional;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -99,14 +98,18 @@ public class GenericConfigurationTool extends Application implements AppControl 
     @Override
     public void closeApp() {
         if (isEdited) {
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            DialogPane dialogPane = alert.getDialogPane();
+            var yes = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+            var no = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
+            var alert = new Alert(
+                    AlertType.CONFIRMATION,
+                    "You have unsaved edits.\nReally close and exit?",
+                    yes, no);
+            var dialogPane = alert.getDialogPane();
             dialogPane.getStylesheets().add(
                 getClass().getResource("GenericConfigurationTool.css").toExternalForm());
             alert.setTitle("Exit Confirmation");
-            alert.setHeaderText("You have unsaved edits.\nReally exit?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() != ButtonType.OK) {
+            var result = alert.showAndWait();
+            if (result.get().getText().equalsIgnoreCase("Stay")) {
                 return;
             }
         }
@@ -130,5 +133,4 @@ public class GenericConfigurationTool extends Application implements AppControl 
     public static void main(String[] args) {
         launch(args);
     }
-    
 }
