@@ -35,30 +35,30 @@ public class BorderPaneExample extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        BorderPane borderPane = new BorderPane();
+        var borderPane = new BorderPane();
 
-        Button rightButton = new Button("Right");
+        var rightButton = new Button("Right");
         rightButton.setOnAction((ActionEvent event) -> {
             System.out.println("Right button");
         });
 
-        Button leftButton = new Button("Left");
+        var leftButton = new Button("Left");
         leftButton.setOnAction((ActionEvent event) -> {
             System.out.println("Left button");
         });
 
-        Button topButton = new Button("Top");
+        var topButton = new Button("Top");
         topButton.setOnAction((ActionEvent event) -> {
             System.out.println("Top button");
         });
 
-        Button bottomButton = new Button("Bottom");
+        var bottomButton = new Button("Bottom");
         bottomButton.setOnAction((ActionEvent event) -> {
             System.out.println("Bottom button");
         });
         
-        Pane centerPane = new Pane();
-        ResizeableCanvas resizeableCanvas = new ResizeableCanvas(centerPane);
+        var centerPane = new Pane();
+        var resizeableCanvas = new ResizeableCanvas(centerPane);
         centerPane.getChildren().add(resizeableCanvas);
         centerPane.setStyle(
             "-fx-padding: 0;" +
@@ -92,7 +92,7 @@ public class BorderPaneExample extends Application {
             "-fx-border-color: #cccccc;");
 
 
-        Scene scene = new Scene(borderPane, 800, 600);
+        var scene = new Scene(borderPane, 800, 600);
         primaryStage.setTitle("BorderPane Example with Canvas");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -106,7 +106,7 @@ public class BorderPaneExample extends Application {
     }
 
     public HBox makeHBox() {
-        HBox hbox = new HBox();
+        var hbox = new HBox();
         hbox.setPadding(new Insets(5, 5, 5, 5));
         hbox.setSpacing(5);
         hbox.setStyle("-fx-background-color: #cccccc;");
@@ -114,7 +114,7 @@ public class BorderPaneExample extends Application {
     }
 
     public VBox makeVBox() {
-        VBox vbox = new VBox();
+        var vbox = new VBox();
         vbox.setPadding(new Insets(5, 5, 5, 5));
         vbox.setSpacing(5);
         vbox.setStyle("-fx-background-color: #dddddd;");
