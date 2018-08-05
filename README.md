@@ -1,8 +1,8 @@
 # java
 
 A "sketchbook" collection of Java projects originally created in NetBeans. These are not complete applications,
-but a experiments trying out various capabilities and features of Java and JavaFX. They'll start and they
-illustrate some feature or collection of features.
+but coding experiments trying out various capabilities and features of Java and JavaFX. They'll start and they
+illustrate some feature or collection of featuresi, but they're not all that useful in and of themselves.
 
 + BorderPaneExample - JavaFX application. Creates a resizable canvas that is drawn upon and updates as
 the Pane parent is resized.
