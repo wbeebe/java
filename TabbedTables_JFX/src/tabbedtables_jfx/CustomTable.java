@@ -91,8 +91,6 @@ public class CustomTable extends BorderPane {
 
         leftScroll.setContent(tableView);
         rightPane = new BorderPane();
-        //var rightButton = new Button("right");
-        //rightPane.setCenter(rightButton);
 
         splitPane.getItems().add(leftPane);
         splitPane.getItems().add(rightPane);
@@ -100,20 +98,22 @@ public class CustomTable extends BorderPane {
 
         setCenter(splitPane);
     }
-    
-    /*
-    * Creates a text pane with the row data selected by a double click and places
-    * it in the right side of the split pane. Resizes the split pane to show the
-    * data.
-    */
+
+    /**
+     * Creates a text pane with the row data selected by a double click and
+     * places it in the right side of the split pane. Resizes the split pane to
+     * show the data.
+     * 
+     * @param data - An instance of RowData
+     */
     private void displayRowData(RowData data) {
         var text = new TextArea();
         text.setEditable(false);
-        text.appendText("Row clicked.\n\n");
-        text.appendText(String.format(" Col 1 %s\n", data.getColumn_1()));
-        text.appendText(String.format(" Col 2 %s\n", data.getColumn_2()));
-        text.appendText(String.format(" Col 3 %s\n", data.getColumn_3()));
-        text.appendText(String.format(" Col 4 %s\n", data.getColumn_4()));
+        text.appendText(" Row Clicked\n\n");
+        text.appendText(String.format(" Col 1: %s\n", data.getColumn_1()));
+        text.appendText(String.format(" Col 2: %s\n", data.getColumn_2()));
+        text.appendText(String.format(" Col 3: %s\n", data.getColumn_3()));
+        text.appendText(String.format(" Col 4: %s\n", data.getColumn_4()));
         rightPane.setCenter(text);
         splitPane.setDividerPositions(new double[]{0.6, 0.4});
     }

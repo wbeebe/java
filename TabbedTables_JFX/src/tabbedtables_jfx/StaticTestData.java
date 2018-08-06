@@ -88,6 +88,12 @@ public class StaticTestData {
         { "last sample", "last sample", "last sample", "last sample" },
     };
 
+    /**
+     * Build up an ObservableList from the String[][] sampleData above. Build it
+     * once if it's empty, else return it.
+     * 
+     * @return - ObservableList of sampleData
+     */
     public static ObservableList getRowData() {
         if (rowData.isEmpty()) {
             for ( String[] data : sampleData ) {
