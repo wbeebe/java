@@ -19,6 +19,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -88,16 +90,27 @@ public class TabbedTables extends Application {
      */
     private MenuBar makeTopMenu(final Stage stage) {
         MenuBar menu = new MenuBar();
-        
+
         Menu fileMenu = new Menu("File");
         MenuItem exitMenuItem = new MenuItem("Exit");
         exitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
         exitMenuItem.setOnAction((ActionEvent ae) -> {
             Platform.exit();
         });
-
         fileMenu.getItems().addAll(exitMenuItem);
-        menu.getMenus().addAll(fileMenu);
+
+        Menu helpMenu = new Menu("Help");
+        MenuItem aboutMenuItem = new MenuItem("About");
+        aboutMenuItem.setOnAction((ActionEvent ae) -> {
+            var aboutAlert = new Alert(AlertType.INFORMATION);
+            aboutAlert.initOwner(stage);
+            aboutAlert.setTitle("About Tabbed Tables");
+            aboutAlert.setHeaderText("Tabbed Tables V 0.1");
+            aboutAlert.setContentText(new RuntimeEnvironment().getText());
+            aboutAlert.showAndWait();
+        });
+        helpMenu.getItems().addAll(aboutMenuItem);
+        menu.getMenus().addAll(fileMenu, helpMenu);
         return menu;
     }
 }
