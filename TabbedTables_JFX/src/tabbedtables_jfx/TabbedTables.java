@@ -33,13 +33,13 @@ public class TabbedTables extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Tabbed Tables");
-        StackPane root = new StackPane();
-        Scene scene = new Scene(root, 800, 600);
+        var root = new StackPane();
+        var scene = new Scene(root, 800, 600);
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(new TopMenu(primaryStage));
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
-        TabPane tabPane = new TabPane();
+        var tabPane = new TabPane();
 
         for (var i = 1; i < 5; i++) {
             Tab tab = new Tab();
