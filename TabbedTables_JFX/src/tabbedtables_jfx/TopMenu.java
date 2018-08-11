@@ -46,17 +46,48 @@ public class TopMenu extends MenuBar {
     Stage stage;
     MenuAction exitAction;
     MenuAction aboutAction;
+    MenuAction newAction;
+    MenuAction openAction;
+    MenuAction saveAction;
+    MenuAction saveAsAction;
 
     public TopMenu(Stage stage) {
         this.stage = stage;
         this.exitAction = new DefaultExitAction();
         this.aboutAction = new DefaultAboutAction(this.stage);
+        this.newAction = new NonOperationalAction(this.stage, "New");
+        this.openAction = new NonOperationalAction(this.stage, "Open");
+        this.saveAction = new NonOperationalAction(this.stage, "Save");
+        this.saveAsAction = new NonOperationalAction(this.stage, "Save As");
 
-        Menu fileMenu = new Menu("File");
-        MenuItem exitMenuItem = new MenuItem("Exit");
+        var fileMenu = new Menu("File");
+        var newMenuItem = new MenuItem("New");
+        newMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+        newMenuItem.setOnAction((ActionEvent ae) -> { newAction.doAction(); });
+        
+        var openMenuItem = new MenuItem("Open");
+        openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+        openMenuItem.setOnAction((ActionEvent ae) -> { newAction.doAction(); });
+
+        var saveMenuItem = new MenuItem("Save");
+        saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+        saveMenuItem.setOnAction((ActionEvent ae) -> { saveAction.doAction(); });
+
+        var saveAsMenuItem = new MenuItem("Save As...");
+        saveAsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.ALT_DOWN));
+        saveAsMenuItem.setOnAction((ActionEvent ae) -> { saveAsAction.doAction(); });
+
+        var exitMenuItem = new MenuItem("Exit");
         exitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
         exitMenuItem.setOnAction((ActionEvent ae) -> { exitAction.doAction(); });
-        fileMenu.getItems().addAll(new SeparatorMenuItem(), exitMenuItem);
+
+        fileMenu.getItems().addAll(
+            newMenuItem,
+            openMenuItem,
+            saveMenuItem,
+            saveAsMenuItem,
+            new SeparatorMenuItem(),
+            exitMenuItem);
 
         Menu helpMenu = new Menu("Help");
         MenuItem aboutMenuItem = new MenuItem("About");
@@ -91,6 +122,20 @@ public class TopMenu extends MenuBar {
     }
 
     public MenuAction getAboutAction() { return this.aboutAction; }
+    
+    public void setNewAction(MenuAction action) {
+        if (action != null) {
+            this.newAction = action;
+        }
+    }
+
+    public MenuAction getNewAction() { return this.newAction; }
+    
+    public void setOpenAction(MenuAction action) {
+        if (action != null) {
+            this.openAction = action;
+        }
+    }
 }
 
 /**
@@ -116,13 +161,33 @@ class DefaultAboutAction implements MenuAction {
 
     public DefaultAboutAction(Stage st) {
         this.stage = st;
-
     }
 
     @Override
     public void doAction() {
         var dialog = 
             new AboutDialog(stage, "About Tabbed Tables", "Tabbed Tables V 0.1");
+        dialog.showAndWait();
+    }
+}
+
+/**
+ * A default class around an Alert to use for stubbing purposes. 
+ * @author wbeebe
+ */
+class NonOperationalAction implements MenuAction {
+    Stage owner;
+    String title;
+
+    public NonOperationalAction(Stage owner, String title) {
+        this.owner = owner;
+        this.title = title;
+    }
+
+    @Override
+    public void doAction() {
+        var dialog =
+            new NonOperationalDialog(owner, title);
         dialog.showAndWait();
     }
 }
