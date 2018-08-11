@@ -80,7 +80,7 @@ public class CustomTable extends BorderPane {
             TableRow<RowData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
-                        && event.getClickCount() == 2) {
+                        && event.getClickCount() == 1) {
                     RowData clickedRow = row.getItem();
                     displayRowData(clickedRow);
                 }
