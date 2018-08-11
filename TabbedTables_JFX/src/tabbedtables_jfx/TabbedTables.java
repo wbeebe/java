@@ -42,7 +42,7 @@ public class TabbedTables extends Application {
         var tabPane = new TabPane();
 
         for (var i = 1; i < 5; i++) {
-            Tab tab = new Tab();
+            var tab = new Tab();
             tab.setText(String.format("Tab %d", i));
             tab.setContent(new CustomTable());
             tabPane.getTabs().add(tab);
