@@ -108,6 +108,7 @@ public class GenericConfigurationTool extends Application implements AppControl 
             dialogPane.getStylesheets().add(
                 getClass().getResource("GenericConfigurationTool.css").toExternalForm());
             alert.setTitle("Exit Confirmation");
+            alert.initOwner(stage);
             var result = alert.showAndWait();
             if (result.get().getText().equalsIgnoreCase("Stay")) {
                 return;
