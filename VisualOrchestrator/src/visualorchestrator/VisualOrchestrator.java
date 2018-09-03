@@ -21,8 +21,10 @@ import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -31,6 +33,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -52,12 +56,13 @@ public class VisualOrchestrator extends Application implements Control {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Visual Orchestrator");
-        BorderPane borderPane = new BorderPane();
+        var borderPane = new BorderPane();
         borderPane.setTop(makeTopMenu(primaryStage));
-        Scene scene = new Scene(borderPane, 1024, 800);
+
+        var scene = new Scene(borderPane, 1024, 800);
         background = new Background(scene);
         
-        Group root = new Group();
+        var root = new Group();
 
         start = new BigStartButton(020,020,040);
         start.setControlled(this);
@@ -68,28 +73,31 @@ public class VisualOrchestrator extends Application implements Control {
         node5 = new ActivityNode(390,210,80,80,"Action 5");
         node6 = new ActivityNode(530,010,80,80,"Action 6");
 
-        connect0 = new Edge(start,  node1, Color.BLACK, 2);
-        connect1 = new Edge(node1, node2, Color.BLACK, 2);
-        connect2 = new Edge(node2, node3, Color.BLACK, 2);
-        connect3 = new Edge(node2, node4, Color.BLACK, 2);
-        connect4 = new Edge(node2, node5, Color.BLACK, 2);
-        connect5 = new Edge(node3, node6, Color.BLACK, 2);
+        // connect0 = new Edge(start, node1, Color.BLACK, 2);
+        // connect1 = new Edge(node1, node2, Color.BLACK, 2);
+        // connect2 = new Edge(node2, node3, Color.BLACK, 2);
+        // connect3 = new Edge(node2, node4, Color.BLACK, 2);
+        // connect4 = new Edge(node2, node5, Color.BLACK, 2);
+        // connect5 = new Edge(node3, node6, Color.BLACK, 2);
 
-        arrowEnd1 = new Arrowhead(connect1);
-        arrowEnd2 = new Arrowhead(connect2);
-        arrowEnd3 = new Arrowhead(connect3);
-        arrowEnd4 = new Arrowhead(connect4);
-        arrowEnd5 = new Arrowhead(connect5);
+        // arrowEnd1 = new Arrowhead(connect1);
+        // arrowEnd2 = new Arrowhead(connect2);
+        // arrowEnd3 = new Arrowhead(connect3);
+        // arrowEnd4 = new Arrowhead(connect4);
+        // arrowEnd5 = new Arrowhead(connect5);
 
         root.getChildren().add(background);
         // we lay down the connectors first so that everthing else overlays
         // their ends.
         //
-        root.getChildren().addAll( connect0, connect1, connect2, connect3, connect4, connect5 );
+        // root.getChildren().addAll( connect0, connect1, connect2, connect3, connect4, connect5 );
         root.getChildren().addAll( start, node1, node2, node3, node4, node5, node6 );
-        root.getChildren().addAll( arrowEnd1, arrowEnd2, arrowEnd3, arrowEnd4, arrowEnd5 );
+        // root.getChildren().addAll( arrowEnd1, arrowEnd2, arrowEnd3, arrowEnd4, arrowEnd5 );
 
         borderPane.setCenter(root);
+        var vbox = makeVBox();
+        vbox.getChildren().add(new Button("Right"));
+        borderPane.setRight(vbox);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -104,15 +112,19 @@ public class VisualOrchestrator extends Application implements Control {
     @Override
     public void setAsActive() {
         node1.setAsActive();
-        connect1.setStroke(Color.RED);
-        arrowEnd1.setFill(Color.RED);
+        if (connect1 != null) {
+            connect1.setStroke(Color.RED);
+            arrowEnd1.setFill(Color.RED);
+        }
     }
 
     @Override
     public void setAsInactive() {
         node1.setAsInactive();
-        connect1.setStroke(Color.BLACK);
-        arrowEnd1.setFill(Color.BLACK);
+        if (connect1 != null) {
+            connect1.setStroke(Color.BLACK);
+            arrowEnd1.setFill(Color.BLACK);
+        }
     }
 
     private MenuBar makeTopMenu(final Stage stage) {
@@ -164,5 +176,20 @@ public class VisualOrchestrator extends Application implements Control {
         */
         menuBar.getMenus().addAll(fileMenu);
         return menuBar;
+    }
+
+    public HBox makeHBox() {
+        var hbox = new HBox();
+        hbox.setPadding(new Insets(5, 5, 5, 5));
+        hbox.setSpacing(5);
+        hbox.setStyle("-fx-background-color: #cccccc;");
+        return hbox;
+    }
+    public VBox makeVBox() {
+        var vbox = new VBox();
+        vbox.setPadding(new Insets(5, 5, 5, 5));
+        vbox.setSpacing(5);
+        vbox.setStyle("-fx-background-color: #dddddd;");
+        return vbox;
     }
 }
