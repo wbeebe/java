@@ -23,7 +23,9 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurve;
@@ -39,6 +41,8 @@ public class ActivityNode extends StackPane implements Control {
     Label label;
     CubicCurve connector;
     Arrowhead arrowhead;
+    double sceneX, sceneY;
+    double translateX, translateY;
 
     ArrayList<ActivityNode> children = new ArrayList<>();
 
@@ -118,8 +122,39 @@ public class ActivityNode extends StackPane implements Control {
         setLayoutY(y);
         setEffect(dropShadow);
 
-        setOnMouseClicked((MouseEvent event) -> {
-            System.out.println("Mouse clicked");
+        setOnMousePressed((MouseEvent event) -> {
+            sceneX = event.getSceneX();
+            sceneY = event.getSceneY();
+            translateX = ((ActivityNode)(event.getSource())).getTranslateX();
+            translateY = ((ActivityNode)(event.getSource())).getTranslateY();
+            toFront();
+            System.out.println("Mouse pressed: " + label.getText());
+            System.out.println(" x " + Double.toString(sceneX));
+        });
+ 
+        setOnMouseDragged((MouseEvent event) -> {
+            var newTranslateX = translateX + (event.getSceneX() - sceneX);
+            var newTranslateY = translateY + (event.getSceneY() - sceneY);
+
+            if (event.getSceneX() > 20.) {
+                ((ActivityNode)(event.getSource())).setTranslateX(newTranslateX);
+            }
+            ((ActivityNode)(event.getSource())).setTranslateY(newTranslateY);
+        });
+
+        setOnMouseReleased((MouseEvent event) -> {
+            var newTranslateX = (double)((long)(((translateX + (event.getSceneX() - sceneX))/10)*10));
+            var newTranslateY = (double)((long)(((translateY + (event.getSceneY() - sceneY))/10)*10));
+
+            ((ActivityNode)(event.getSource())).setTranslateX(newTranslateX);
+            ((ActivityNode)(event.getSource())).setTranslateY(newTranslateY);
+            System.out.println("Mouse released: " + label.getText());
+        });
+
+        setOnDragDetected((MouseEvent event) -> {
+            System.out.println("Drag detected: " + label.getText());
+            Dragboard db = startDragAndDrop(TransferMode.ANY);
+            event.consume();
         });
 
         setOnMouseEntered((MouseEvent event) -> {
