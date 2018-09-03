@@ -21,6 +21,9 @@ the nodes. The Start circle on the far left will accept a click to turn red with
 and porting it to Java 10, nothing has been done on it for years. In addition, it has a bug with how the canvas is drawn.
 That's why, in part I wrote BorderPaneExample, to try and fix my canvas problem.
 
+UPDATE Sept 2018 - The nodes can now be moved around. The arrows are currently gone (commented out for now).
+I'm about ready to move the arrows (edges) to using round endpoints. The look I'm after is from Blender's node editor.
+
 + TabbedTable - Standard Java JFC application. One of the first of my experimental applications. I wrote it with the idea
 it would be a database event browsing tool. One of my programs captured every RTI event that flowed within an HLA simulation
 so that it could be mined later. This was the visual foundation for that tool. It would present results in an Excel-like table, and
