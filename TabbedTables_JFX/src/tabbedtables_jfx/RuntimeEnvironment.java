@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,28 +37,28 @@ public class RuntimeEnvironment extends TextArea {
     
     private void init() {
         setEditable(false);
-        setMinSize(32, 12);
+        setMinSize(32, 24);
         clear();
-        appendText("Java Version" + Runtime.version().toString() + "\n");
-        var work = System.getProperty("java.home");
+        appendText("Java Version " + System.clearProperty("java.version")+ "\n");
+        String work = System.getProperty("java.home");
         appendText("Java Home: " + work + "\n\n");
         work = System.getProperty("os.name");
         if (work.contains("Linux")) {
-            var osName = "OS: Linux";
+            String osName = "OS: Linux";
             // Look to see if it's RHEL or a RHEL derivative.
             //
-            var rhelPath = FileSystems.getDefault().getPath("/etc/system-release");
+            Path rhelPath = FileSystems.getDefault().getPath("/etc/system-release");
 
             // Look to see if it's Mint Linux
             //
-            var mintPath = FileSystems.getDefault().getPath("/etc/linuxmint/info");
+            Path mintPath = FileSystems.getDefault().getPath("/etc/linuxmint/info");
             
             // Look to see if it's Ubuntu & others
             //
-            var uPath = FileSystems.getDefault().getPath("/etc/lsb-release");
+            Path uPath = FileSystems.getDefault().getPath("/etc/lsb-release");
 
             Stream<String> info = null;
-            var srName = "";
+            String srName = "";
 
             if (Files.isReadable(rhelPath)) {
                 try {
@@ -120,7 +121,7 @@ public class RuntimeEnvironment extends TextArea {
         com.sun.management.OperatingSystemMXBean bean =
             (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
 
-        var runtime = Runtime.getRuntime();
+        Runtime runtime = Runtime.getRuntime();
 
         appendText("Total system memory: " + format(bean.getTotalPhysicalMemorySize()) + "\n");
         appendText("Total memory available to JVM: " + format(runtime.maxMemory()) + "\n");
@@ -131,11 +132,11 @@ public class RuntimeEnvironment extends TextArea {
     }
 
     private String getQuotedValue(Stream<String> data, String key) {
-        var value = "";
+        String value = "";
         if (data != null) {
             String[] items = data.toArray(String[]::new);
 
-            for (var item: items) {
+            for (String item: items) {
                 if (item.contains(key)) {
                     String[] values = item.split("=");
 
@@ -153,7 +154,7 @@ public class RuntimeEnvironment extends TextArea {
 
     private String format(long num) {
         double val = (double)num;
-        var suffix = "";
+        String suffix = "";
 
         if (val > 1024.0) {
             suffix = "Kb";
@@ -168,7 +169,7 @@ public class RuntimeEnvironment extends TextArea {
             val /= 1024.0;
         }
         
-        var format = new DecimalFormat("#,###.##");
+        DecimalFormat format = new DecimalFormat("#,###.##");
         return format.format(val) + suffix;
     }
 }

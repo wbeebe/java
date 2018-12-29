@@ -5,6 +5,8 @@ but coding experiments trying out various capabilities and features of Java 8 an
 illustrate some feature or collection of features, but they're not all that useful in and of themselves.
 
 Note that as of August 2018 all the applications have been migrated to Java 10.0.2.
+Note that as of December 2018 all applications have been migrated back to Java 8, 1.8.0_192 OpenJDK
+I have moved back to Amazon Corretto Preview 2, https://aws.amazon.com/corretto/
 
 ## Available Applications
 

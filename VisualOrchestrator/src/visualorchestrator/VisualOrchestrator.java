@@ -56,13 +56,13 @@ public class VisualOrchestrator extends Application implements Control {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Visual Orchestrator");
-        var borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
         borderPane.setTop(makeTopMenu(primaryStage));
 
-        var scene = new Scene(borderPane, 1024, 800);
+        Scene scene = new Scene(borderPane, 1024, 800);
         background = new Background(scene);
         
-        var root = new Group();
+        Group root = new Group();
 
         start = new BigStartButton(020,020,040);
         start.setControlled(this);
@@ -95,7 +95,7 @@ public class VisualOrchestrator extends Application implements Control {
         // root.getChildren().addAll( arrowEnd1, arrowEnd2, arrowEnd3, arrowEnd4, arrowEnd5 );
 
         borderPane.setCenter(root);
-        var vbox = makeVBox();
+        VBox vbox = makeVBox();
         vbox.getChildren().add(new Button("Right"));
         borderPane.setRight(vbox);
         primaryStage.setScene(scene);
@@ -179,14 +179,14 @@ public class VisualOrchestrator extends Application implements Control {
     }
 
     public HBox makeHBox() {
-        var hbox = new HBox();
+        HBox hbox = new HBox();
         hbox.setPadding(new Insets(5, 5, 5, 5));
         hbox.setSpacing(5);
         hbox.setStyle("-fx-background-color: #cccccc;");
         return hbox;
     }
     public VBox makeVBox() {
-        var vbox = new VBox();
+        VBox vbox = new VBox();
         vbox.setPadding(new Insets(5, 5, 5, 5));
         vbox.setSpacing(5);
         vbox.setStyle("-fx-background-color: #dddddd;");

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -91,13 +92,14 @@ public class AboutUI extends GridPane implements TabUI {
         add(new Label("Runtime Environment"), 0, 5, 2, 1);
         TextArea textArea1 = new TextArea();
         textArea1.setEditable(false);
-        textArea1.setMinSize(32, 12);
-        add(textArea1, 0, 6, 8, 9);
+        textArea1.setMinSize(32, 24);
+        add(textArea1, 0, 6, 9, 10);
         textArea1.clear();
+        textArea1.setWrapText(true);
+        ScrollBar scrollBar = (ScrollBar)textArea1.lookup(".scroll-bar:vertical");
+        //scrollBar.setDisable(true);
         
-        //String work = System.getProperty("java.version");
-        //textArea1.appendText("Java Version: " + work + "\n");
-        textArea1.appendText("Java Version: " + Runtime.version().toString() + "\n");
+        textArea1.appendText("Java Version: " + System.clearProperty("java.version") + "\n");
         String work = System.getProperty("java.home");
         textArea1.appendText("Java Home: " + work + "\n\n");
         work = System.getProperty("os.name");

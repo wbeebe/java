@@ -133,8 +133,8 @@ public class ActivityNode extends StackPane implements Control {
         });
  
         setOnMouseDragged((MouseEvent event) -> {
-            var newTranslateX = translateX + (event.getSceneX() - sceneX);
-            var newTranslateY = translateY + (event.getSceneY() - sceneY);
+            double newTranslateX = translateX + (event.getSceneX() - sceneX);
+            double newTranslateY = translateY + (event.getSceneY() - sceneY);
 
             if (event.getSceneX() > 20.) {
                 ((ActivityNode)(event.getSource())).setTranslateX(newTranslateX);
@@ -143,8 +143,8 @@ public class ActivityNode extends StackPane implements Control {
         });
 
         setOnMouseReleased((MouseEvent event) -> {
-            var newTranslateX = (double)((long)(((translateX + (event.getSceneX() - sceneX))/10)*10));
-            var newTranslateY = (double)((long)(((translateY + (event.getSceneY() - sceneY))/10)*10));
+            double newTranslateX = (double)((long)(((translateX + (event.getSceneX() - sceneX))/10)*10));
+            double newTranslateY = (double)((long)(((translateY + (event.getSceneY() - sceneY))/10)*10));
 
             ((ActivityNode)(event.getSource())).setTranslateX(newTranslateX);
             ((ActivityNode)(event.getSource())).setTranslateY(newTranslateY);

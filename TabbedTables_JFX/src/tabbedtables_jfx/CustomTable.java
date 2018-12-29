@@ -45,8 +45,8 @@ public class CustomTable extends BorderPane {
         tableView.setEditable(false);
         this.splitPane = new SplitPane();
 
-        var leftPane = new BorderPane();
-        var leftScroll = new ScrollPane();
+        BorderPane leftPane = new BorderPane();
+        ScrollPane leftScroll = new ScrollPane();
         leftScroll.setFitToHeight(true);
         leftScroll.setFitToWidth(true);
         leftPane.setCenter(leftScroll);
@@ -67,7 +67,7 @@ public class CustomTable extends BorderPane {
         * "Column 1" -> "column_1" -> getColumn_1() and setColumn_1(...)
         */
         for ( String header : StaticTestData.columnNames) {
-            var column = new TableColumn(header);
+            TableColumn column = new TableColumn(header);
             column.setCellValueFactory(
                 new PropertyValueFactory<>(header.toLowerCase().replace(' ', '_'))
             );
@@ -107,7 +107,7 @@ public class CustomTable extends BorderPane {
      * @param data - An instance of RowData
      */
     private void displayRowData(RowData data) {
-        var text = new TextArea();
+        TextArea text = new TextArea();
         text.setEditable(false);
         text.appendText(" Row Clicked\n\n");
         text.appendText(String.format(" Col 1: %s\n", data.getColumn_1()));

@@ -60,24 +60,24 @@ public class TopMenu extends MenuBar {
         this.saveAction = new NonOperationalAction(this.stage, "Save");
         this.saveAsAction = new NonOperationalAction(this.stage, "Save As");
 
-        var fileMenu = new Menu("File");
-        var newMenuItem = new MenuItem("New");
+        Menu fileMenu = new Menu("File");
+        MenuItem newMenuItem = new MenuItem("New");
         newMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
         newMenuItem.setOnAction((ActionEvent ae) -> { newAction.doAction(); });
         
-        var openMenuItem = new MenuItem("Open");
+        MenuItem openMenuItem = new MenuItem("Open");
         openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
         openMenuItem.setOnAction((ActionEvent ae) -> { newAction.doAction(); });
 
-        var saveMenuItem = new MenuItem("Save");
+        MenuItem saveMenuItem = new MenuItem("Save");
         saveMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         saveMenuItem.setOnAction((ActionEvent ae) -> { saveAction.doAction(); });
 
-        var saveAsMenuItem = new MenuItem("Save As...");
+        MenuItem saveAsMenuItem = new MenuItem("Save As...");
         saveAsMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.ALT_DOWN));
         saveAsMenuItem.setOnAction((ActionEvent ae) -> { saveAsAction.doAction(); });
 
-        var exitMenuItem = new MenuItem("Exit");
+        MenuItem exitMenuItem = new MenuItem("Exit");
         exitMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
         exitMenuItem.setOnAction((ActionEvent ae) -> { exitAction.doAction(); });
 
@@ -165,7 +165,7 @@ class DefaultAboutAction implements MenuAction {
 
     @Override
     public void doAction() {
-        var dialog = 
+        AboutDialog dialog = 
             new AboutDialog(stage, "About Tabbed Tables", "Tabbed Tables V 0.1");
         dialog.showAndWait();
     }
@@ -186,7 +186,7 @@ class NonOperationalAction implements MenuAction {
 
     @Override
     public void doAction() {
-        var dialog =
+        NonOperationalDialog dialog =
             new NonOperationalDialog(owner, title);
         dialog.showAndWait();
     }
