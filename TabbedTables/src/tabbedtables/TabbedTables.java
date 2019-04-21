@@ -13,72 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tabbedtables;
+package tabbedtables_jfx;
 
-import java.awt.Color;
-import java.util.Enumeration;
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
- * @author William
+ * @author wbeebe
  */
-public class TabbedTables {
+public class TabbedTables_JFX extends Application {
+    
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Tabbed Tables");
+        StackPane root = new StackPane();
+        Scene scene = new Scene(root, 800, 600);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(new TopMenu(primaryStage));
+        borderPane.prefHeightProperty().bind(scene.heightProperty());
+        borderPane.prefWidthProperty().bind(scene.widthProperty());
+        TabPane tabPane = new TabPane();
 
-    private static void dumpLookAndFeelDefaults() {
-        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-        Enumeration enums = UIManager.getLookAndFeelDefaults().keys();
-        while (enums.hasMoreElements()) {
-            Object key = enums.nextElement();
-            Object val = defaults.get(key);
-            System.out.println(key.toString() + " = " + (val != null ? val.toString() : "NULL"));
-        }
-    }
-
-    private static void createGUI() {
-        try {
-            // Set system Java L&F (Windows for Windows, Gnome for Java...)
-            //
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } 
-        catch (UnsupportedLookAndFeelException | 
-                ClassNotFoundException | 
-                InstantiationException | 
-                IllegalAccessException exception) {
-            // silently handle exception
+        for (int i = 1; i < 5; i++) {
+            Tab tab = new Tab();
+            tab.setText(String.format("Tab %d", i));
+            tab.setContent(new CustomTable());
+            tabPane.getTabs().add(tab);
         }
 
-        // Turn off the dashed line around the active tab. Make it transparent.
-        //
-        UIManager.put("TabbedPane.focus", new Color(0,0,0,0));
+        borderPane.setCenter(tabPane);
+        root.getChildren().add(borderPane);
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-        //dumpLookAndFeelDefaults();
-
-        TabbedContainer tabbedContainer = new TabbedContainer();
-        tabbedContainer.addTable("Tab 1", new CustomTable(new StaticTestData()));
-        tabbedContainer.addTable("Tab 2", new CustomTable(new StaticTestData()));
-        tabbedContainer.addTable("Tab 3", new CustomTable(new StaticTestData()));
-        tabbedContainer.addTable("Tab 4", new CustomTable(new StaticTestData()));
-
-        JFrame frame = new JFrame("Test tabs and tables");
-
-        frame.setContentPane(tabbedContainer);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setVisible(true);
+        primaryStage.setOnCloseRequest(event -> {
+            closeApp();
+            event.consume();
+        });
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            createGUI();
-        });
+        launch(args);
+    }
+
+    public void closeApp() {
+        Platform.exit();
+        System.exit(0);
     }
 }

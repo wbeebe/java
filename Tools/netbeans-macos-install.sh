@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 
-NETBEANS_VERSION=10
-NETBEANS_APPLICATION_LOCATION="${HOME}/Applications/NetBeans/NetBeans ${NETBEANS_VERSION}.app/Contents"
+# Copyright (c) 2018 William H. Beebe, Jr.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+# http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 # Check to see that a file name was passed on the command line.
-# If not, exit with helpful message.
+# If not, exit with a helpful message.
 #
 scriptName=${0##*/}
 scriptName=${scriptName%.*}
@@ -22,7 +33,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # Check to see if the file exists and we can at least read it.
-# If not, exit with helpful message.
+# If not, exit with a helpful message.
 #
 if [[ ! -f $1 ]]; then
     echo "File '$1' does not exist."
@@ -31,6 +42,29 @@ if [[ ! -f $1 ]]; then
 else
     echo "Will install from file '$1'."
 fi 
+
+# Use Bashisms to parse out the major version number from the file name.
+# This means that this script relies upon a ZIP file with the naming convention
+# of 'incubating-netbeans-##.#-bin.zip' where ##.# are the release major
+# and minor version, respectively. This makes the script brittle
+# and the script will break if this convention is changed.
+#
+Z="${1//[^[:digit:].]/}"
+VERNUM=${Z%%.*}
+
+# Test that we parsed a version number. At this point we just want a number.
+# If no number was parsed then default to version 11.
+#
+if [[ -z "$VERNUM" ]]
+then
+    NETBEANS_VERSION=11
+    echo Using default version of 11.
+else
+    NETBEANS_VERSION=$VERNUM
+    echo Using version $VERNUM from file $1
+fi
+
+NETBEANS_APPLICATION_LOCATION="${HOME}/Applications/NetBeans/NetBeans ${NETBEANS_VERSION}.app/Contents"
 
 # Prepare the area where the NetBeans app will be built from the basic
 # zip file. Create the basic directory structure.

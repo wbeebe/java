@@ -85,15 +85,15 @@ public class AboutUI extends GridPane implements TabUI {
         setPadding(new Insets(0, 5, 0, 10));
         
         add(new Label("Product:"), 0, 1);
-        add(new Label("Generic Configuration Tool"), 1, 1);
+        add(new Label("Generic Configuration Tool"), 2, 1);
         add(new Label("Release:"), 0, 2);
-        add(new Label("..."), 1, 2);
+        add(new Label("..."), 2, 2);
 
-        add(new Label("Runtime Environment"), 0, 5, 2, 1);
+        add(new Label("Runtime Environment"), 0, 4, 5, 1);
         TextArea textArea1 = new TextArea();
         textArea1.setEditable(false);
-        textArea1.setMinSize(32, 24);
-        add(textArea1, 0, 6, 9, 10);
+        textArea1.setMinSize(32, 40);
+        add(textArea1, 0, 6, 12, 16);
         textArea1.clear();
         textArea1.setWrapText(true);
         ScrollBar scrollBar = (ScrollBar)textArea1.lookup(".scroll-bar:vertical");
@@ -164,7 +164,7 @@ public class AboutUI extends GridPane implements TabUI {
         else {
             textArea1.appendText("OS: " + work);
             work = System.getProperty("os.version");
-            textArea1.appendText(" Version " + work + "\n\n");
+            textArea1.appendText(" Version " + work + "\n");
         }
         
         /*

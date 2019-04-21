@@ -13,27 +13,48 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tabbedtables;
+package tabbedtables_jfx;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
- *
+ * This class began life providing the same data for the JDK Table models used
+ * to create equivalent table views. Life was simpler then, in that all you
+ * needed to do was create the first two data structures (columnNames and
+ * rowData) and pass them into the Table methods to populate the table.
+ * 
+ * Now for JavaFX more work must be done. That's why we have the getRowData()
+ * method. It takes that second double String array and puts it into an
+ * ObservableList that is then used by the JavaFX table to populate the table
+ * view with test data.
+ * 
+ * Note that everything is static. Also note that we check to see if rawData
+ * is empty and if it is populate it then, but only once. All subsequent calls
+ * simply return a reference to the now-filled rawData.
+ * 
  * @author William
  */
-public class StaticTestData implements TableDataProvider {
+public class StaticTestData {
     public static String[] columnNames = {
         "Column 1", "Column 2", "Column 3", "Column 4"
     };
 
-    public static Object[][] sampleData =
+    public static ObservableList<RowData> rowData = 
+        FXCollections.observableArrayList();
+
+    public static String[][] sampleData =
     {
-        { "sample 1", "sample e", "sample", "sample" },
-        { "sample 2", "sample d", "sample", "sample" },
-        { "sample 3", "sample c", "sample", "sample" },
-        { "sample 4", "sample b", "sample", "sample" },
-        { "sample 5", "sample a", "sample", "sample" },
-        { "sample", "sample x", "sample", "sample" },
-        { "sample", "sample y", "sample", "sample" },
-        { "sample", "sample z", "sample", "sample" },
+        { "sample 1",  "sample e", "sample 8", "sample h" },
+        { "sample 2",  "sample d", "sample 7", "sample i" },
+        { "sample 3",  "sample c", "sample 6", "sample j" },
+        { "sample 4",  "sample b", "sample 5", "sample k" },
+        { "sample 5",  "sample e", "sample 4", "sample l" },
+        { "sample 6",  "sample f", "sample 3", "sample m" },
+        { "sample 7",  "sample g", "sample 2", "sample n" },
+        { "sample 8",  "sample h", "sample 1", "sample o" },
+        { "sample 10", "sample i", "sample 0", "sample p" },
+        { "sample 11", "sample j", "sample",   "sample q" },
         { "sample", "sample", "sample", "sample" },
         { "sample", "sample", "sample", "sample" },
         { "sample", "sample", "sample", "sample" },
@@ -64,18 +85,22 @@ public class StaticTestData implements TableDataProvider {
         { "sample", "sample", "sample", "sample" },
         { "sample", "sample", "sample", "sample" },
         { "sample", "sample", "sample", "sample" },
-        { "sample", "sample", "sample", "sample" },
-        { "sample", "sample", "sample", "sample" },
+        { "last sample", "last sample", "last sample", "last sample" },
     };
 
-    @Override
-    public String[] getColumnNames() {
-        return columnNames;
+    /**
+     * Build up an ObservableList from the String[][] sampleData above. Build it
+     * once if it's empty, else return it.
+     * 
+     * @return - ObservableList of sampleData
+     */
+    public static ObservableList getRowData() {
+        if (rowData.isEmpty()) {
+            for ( String[] data : sampleData ) {
+                rowData.add(new RowData(data));
+            }
+        }
+        
+        return rowData;
     }
-
-    @Override
-    public Object[][] getTableData() {
-        return sampleData;
-    }
-    
 }

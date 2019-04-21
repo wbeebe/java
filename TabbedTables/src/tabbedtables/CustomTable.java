@@ -13,117 +13,108 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tabbedtables;
+package tabbedtables_jfx;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.table.TableCellRenderer;
+import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 
 /**
- *
- * @author William
+ * A control that displays a split pane with a table on the left side and a text
+ * area on the right. The control is set up with data rows in the table on the
+ * left. When a user clicks any row of data, the table will create a detail text
+ * area and display it on the right side of the split pane.
+ * 
+ * @author wbeebe
  */
-public class CustomTable extends JPanel {
-    private JSplitPane splitPane;
-    private JPanel rightDetail = null;
-    private JLabel rightText;
+public class CustomTable extends BorderPane {
+    SplitPane splitPane;
+    TableView tableView;
+    BorderPane rightPane;
 
-    public CustomTable(TableDataProvider tableData) {
-        super(new GridLayout(1,0,4,4));
-        init(tableData);
-    }
+    CustomTable() {
+        setPadding(new Insets(4,4,4,4));
+        this.tableView = new TableView();
+        tableView.setEditable(false);
+        this.splitPane = new SplitPane();
 
-    private void init(TableDataProvider tableData) {
-        JTable table = new JTable(new TableModel(tableData.getColumnNames(), tableData.getTableData())) {
-            //
-            // A simple renderer to render every odd row in the table as
-            // a color other than white, or the default background color.
-            //
-            @Override
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
-                Component component = super.prepareRenderer(renderer, row, col);
-                //
-                // Alternate row color
-                //
-                if (!isRowSelected(row))
-                    component.setBackground(row % 2 == 0 ? getBackground() : Color.decode("0xEED8AE"));
-                return component;
-            }
-        };
+        BorderPane leftPane = new BorderPane();
+        ScrollPane leftScroll = new ScrollPane();
+        leftScroll.setFitToHeight(true);
+        leftScroll.setFitToWidth(true);
+        leftPane.setCenter(leftScroll);
 
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table.setFillsViewportHeight(true);
-        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        table.setAutoCreateRowSorter(true);
-        table.getTableHeader().setReorderingAllowed(false);
-        table.setGridColor(Color.decode("0xEED8AE"));
+        /*
+        * Build up the table by first creating the column header.
+        * Add the column title from the array of column names in StaticTestData.
+        * Then associate the data identifier for each column by modifying the
+        * column header name. For example:
+        *
+        * "Column 1" -> "column_1"
+        *
+        * This is what the line header.toLowerCase().replace(' ','_')) is doing.
+        *
+        * This is used to name the getters and setters in the data model class.
+        * For example:
+        *
+        * "Column 1" -> "column_1" -> getColumn_1() and setColumn_1(...)
+        */
+        for ( String header : StaticTestData.columnNames) {
+            TableColumn column = new TableColumn(header);
+            column.setCellValueFactory(
+                new PropertyValueFactory<>(header.toLowerCase().replace(' ', '_'))
+            );
+            tableView.getColumns().add(column);
+            tableView.getSortOrder().add(column);
+        }
 
-        // Look for a double mouse click to select a given cell in the table.
-        //
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent event) {
-                if (event.getClickCount() == 2) {
-                    JTable table = (JTable)event.getSource();
-                    int row = table.getSelectedRow();
-                    int col = table.getSelectedColumn();
-
-                    // If we haven't added the right detail pane yet, add it
-                    // and make the split pane's divider wide enough to
-                    // easily drag. This will honor the user's arbitrary
-                    // width setting for any following detail clicks.
-                    //
-                    if (splitPane.getRightComponent() == null) {
-                        splitPane.setRightComponent(rightDetail);
-                        splitPane.setDividerSize(4);
-                    }
-
-                    // Simple detailed view of a given row.
-                    // Don't do like I did the first time and get cell values
-                    // from the table model, especially after a sort. 
-                    // The table view is where you want to get detailed data.
-                    //
-                    rightText.setText("<html><h1>Detailed Information</h1>" +
-                            "<h2>Row clicked:" + Integer.toString(row) + "</h2>" +
-                            "<h2>Column clicked: " + Integer.toString(col) + "</h2>" +
-                            "<h3>Column 1: " + table.getValueAt(row, 0) + "</h3>" +
-                            "<h3>Column 2: " + table.getValueAt(row, 1) + "</h3>" +
-                            "<h3>Column 3: " + table.getValueAt(row, 2) + "</h3>" +
-                            "<h3>Column 4: " + table.getValueAt(row, 3) + "</h3>" + 
-                            "</html>");
+        tableView.setItems(StaticTestData.getRowData());
+        tableView.setRowFactory(tv -> {
+            TableRow<RowData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
+                        && event.getClickCount() == 1) {
+                    RowData clickedRow = row.getItem();
+                    displayRowData(clickedRow);
                 }
-            }
+            });
+            
+            return row;
         });
 
-        //JTableHeader tableHeader = table.getTableHeader();
-        //tableHeader.setReorderingAllowed(false);
+        leftScroll.setContent(tableView);
+        rightPane = new BorderPane();
 
-        // Ceate the split pane, but DON'T ADD the right detail panel. We'll
-        // add it when someone first double-clicks on a table row.
-        //
-        splitPane = new JSplitPane(
-                JSplitPane.HORIZONTAL_SPLIT, 
-                new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), null);
-        splitPane.setDividerSize(0);
-        Component add = add(splitPane);
+        splitPane.getItems().add(leftPane);
+        splitPane.getItems().add(rightPane);
+        splitPane.setDividerPositions(new double[]{1.0});
 
-        rightDetail = new JPanel(new BorderLayout());
-        JPanel closeRightTop = new CloseControl("Placeholder text...", splitPane);
-        rightDetail.add(closeRightTop, BorderLayout.PAGE_START);
-        rightText = new JLabel();
-        rightText.setVerticalAlignment(SwingConstants.TOP);
-        rightDetail.add(rightText, BorderLayout.CENTER);
+        setCenter(splitPane);
+    }
+
+    /**
+     * Creates a text pane with the row data selected by a double click and
+     * places it in the right side of the split pane. Resizes the split pane to
+     * show the data.
+     * 
+     * @param data - An instance of RowData
+     */
+    private void displayRowData(RowData data) {
+        TextArea text = new TextArea();
+        text.setEditable(false);
+        text.appendText(" Row Clicked\n\n");
+        text.appendText(String.format(" Col 1: %s\n", data.getColumn_1()));
+        text.appendText(String.format(" Col 2: %s\n", data.getColumn_2()));
+        text.appendText(String.format(" Col 3: %s\n", data.getColumn_3()));
+        text.appendText(String.format(" Col 4: %s\n", data.getColumn_4()));
+        rightPane.setCenter(text);
+        splitPane.setDividerPositions(new double[]{0.6, 0.4});
     }
 }

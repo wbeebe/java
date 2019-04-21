@@ -100,7 +100,7 @@ public class GenericConfigurationTool extends Application implements AppControl 
     @Override
     public void closeApp() {
         if (isEdited) {
-            ButtonType close = new ButtonType("Close", ButtonBar.ButtonData.OK_DONE);
+            ButtonType close = new ButtonType("Close and Exit", ButtonBar.ButtonData.OK_DONE);
             ButtonType stay = new ButtonType("Stay", ButtonBar.ButtonData.CANCEL_CLOSE);
             Alert alert = new Alert(
                     AlertType.CONFIRMATION,
