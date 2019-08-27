@@ -12,7 +12,7 @@ I have moved back to Amazon Corretto Preview 2, https://aws.amazon.com/corretto/
 
 + BorderPaneExample - JavaFX application. Creates a resizable canvas that is drawn upon and updates as
 the Pane parent is resized.
-![[https://github.com/wbeebe/java/blob/master/Images/BorderPaneExample/MainScreen.png]]
+https://github.com/wbeebe/java/blob/master/Images/BorderPaneExample/MainScreen.png
 
 + GenericConfigurationTool - JavaFX application. Various controls organized into a tabbed interface.
 CSS is used to style the controls. The first tab, About, shows how to display OS type, memory, and Java location and version.
